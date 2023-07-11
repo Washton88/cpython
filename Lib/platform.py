@@ -311,32 +311,64 @@ def _syscmd_ver(system='', release='', version='',
     return system, release, version
 
 _WIN32_CLIENT_RELEASES = {
-    (5, 0): "2000",
-    (5, 1): "XP",
+    (5, 0, 2195): "2000",
+    (5, 1, 2600): "XP",
+    (5, 1, 2700): "XP",
+    (5, 1,  2710): "XP",
     # Strictly, 5.2 client is XP 64-bit, but platform.py historically
     # has always called it 2003 Server
-    (5, 2): "2003Server",
-    (5, None): "post2003",
+    (5, 2, 3790): "2003Server",
+    (5, None, None): "post2003",
 
-    (6, 0): "Vista",
-    (6, 1): "7",
-    (6, 2): "8",
-    (6, 3): "8.1",
-    (6, None): "post8.1",
+    (6, 0, 6000): "Vista",
+    (6, 0, 6001): "Vista",
+    (6, 0, 6002): "Vista",
+    (6, 1, 7000): "7",
+    (6, 1, 7001): "7",
+    (6, 2, 9200): "8",
+    (6, 3, 	9600): "8.1",
+    (6, None, None): "post8.1",
 
-    (10, 0): "10",
-    (10, None): "post10",
+    (10, 0, 10240): "10",
+    (10, 0, 10586): "10",
+    (10, 0, 14393): "10",
+    (10, 0, 15063): "10",
+    (10, 0, 16299): "10",
+    (10, 0, 17134): "10",
+    (10, 0, 17763): "10",
+    (10, 0, 18362): "10",
+    (10, 0, 18363): "10",
+    (10, 0, 19041): "10",
+    (10, 0, 19042): "10",
+    (10, 0, 19043): "10",
+    (10, 0, 19044): "10",
+    (10, 0, 19045): "10",
+    (10, None, None): "post10",
+    (10, 0, 22000): "11",
+    (10, 0, 22621): "11",
 }
 
 # Server release name lookup will default to client names if necessary
 _WIN32_SERVER_RELEASES = {
-    (5, 2): "2003Server",
-
-    (6, 0): "2008Server",
-    (6, 1): "2008ServerR2",
-    (6, 2): "2012Server",
-    (6, 3): "2012ServerR2",
-    (6, None): "post2012ServerR2",
+    (5, 2, 3790): "2003Server",
+    (6, 0, 6000): "2008Server",
+    (6, 0, 6001): "2008Server",
+    (6, 0, 6002): "2008Server",
+    (6, 1, 7600): "2008ServerR2",
+    (6, 1, 7601): "2008ServerR2",
+    (6, 2, 9200): "2012Server",
+    (6, 3, 9600): "2012ServerR2",
+    (6, None, None): "post2012ServerR2",
+    (10, 0, 14393): "Windows Server 2016",
+    (10, 0, 16299): "Windows Server, version 1709",
+    (10, 0, 17134): "Windows Server, version 1803",
+    (10, 0, 17763): "Windows Server 2019",
+    (10, 0, 18362): "Windows Server, version 1903",
+    (10, 0, 18363): "Windows Server, version 1909",
+    (10, 0, 19041): "Windows Server, version 2004",
+    (10, 0, 19042): "Windows Server, version 20H2",
+    (10, 0, 20348): "Windows Server 2022",
+    (10, 0, None): "post Windows Server 2016",
 }
 
 def win32_is_iot():
@@ -373,8 +405,8 @@ def win32_ver(release='', version='', csd='', ptype=''):
         major, minor, build = winver.platform_version or winver[:3]
     version = '{0}.{1}.{2}'.format(major, minor, build)
 
-    release = (_WIN32_CLIENT_RELEASES.get((major, minor)) or
-               _WIN32_CLIENT_RELEASES.get((major, None)) or
+    release = (_WIN32_CLIENT_RELEASES.get((maj, min, build)) or
+               _WIN32_CLIENT_RELEASES.get((maj, None, None)) or
                release)
 
     # getwindowsversion() reflect the compatibility mode Python is
